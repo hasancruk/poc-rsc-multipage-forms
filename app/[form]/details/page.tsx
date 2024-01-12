@@ -2,10 +2,10 @@
 import { useRouter } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form";
 type Inputs = {
-  amount: number;
-  motivation: string;
+  name: string;
+  phoneNumber: string;
+  postcode: string;
 };
-
 export default function Page({
   params,
   searchParams,
@@ -16,30 +16,39 @@ export default function Page({
   const { handleSubmit, register } = useForm<Inputs>();
   const router = useRouter();
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    sessionStorage.setItem(`formData-${params.form}`, JSON.stringify(data));
-    router.push(`/${params.form}/details`);
+    const existingData = JSON.parse(
+      sessionStorage.getItem(`formData-${params.form}`) || ""
+    );
+    sessionStorage.setItem(
+      `formData-${params.form}`,
+      JSON.stringify({ ...existingData, ...data })
+    );
+    router.push(`/${params.form}/payment`);
   };
   return (
     <main className="main">
       <form className="form" onSubmit={handleSubmit(onSubmit)}>
-        <label>Amount</label>
+        <label>Name</label>
         <input
-          type="number"
-          {...register("amount", {
+          type="text"
+          {...register("name", {
             required: "error message",
           })}
         />
-        <label>Your motivation</label>
-        <select {...register("motivation")}>
-          <option value="In memeory of someone">In memeory of someone</option>
-          <option value="I or a loved one has beaten cancer">
-            I or a loved one has beaten cancer
-          </option>
-          <option value="I or a loved one has cancer">
-            I or a loved one has cancer
-          </option>
-          <option value="Different reason">Different reason</option>
-        </select>
+        <label>Phone Number</label>
+        <input
+          type="tel"
+          {...register("phoneNumber", {
+            required: "error message",
+          })}
+        />
+        <label>Post Code</label>
+        <input
+          type="text"
+          {...register("postcode", {
+            required: "error message",
+          })}
+        />
         <input type="submit" />
       </form>
     </main>
