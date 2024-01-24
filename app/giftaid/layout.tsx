@@ -1,7 +1,7 @@
 "use client";
 
-import "./globals.css";
-import { FormProvider } from "../components/FormContext";
+import "../globals.css";
+import { GiftaidFormProvider } from "../../components/GiftaidFormContext";
 
 export default function RootLayout({
   children,
@@ -9,17 +9,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const form = {
-    amount: 0,
-    motivation: "",
     name: "",
     phoneNumber: "",
     postcode: "",
-    paymentMethod: "card",
   };
   return (
     <html>
       <body>
-        <FormProvider form={form}>{children}</FormProvider>
+        <GiftaidFormProvider form={form}>{children}</GiftaidFormProvider>
       </body>
     </html>
   );
